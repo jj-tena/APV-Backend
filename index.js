@@ -15,11 +15,15 @@ connectDB();
 
 const allowedDomains = [process.env.FRONTEND_URL];
 
-
-
-app.use(cors({
-    origin: '*'
-}));
+const corsOptions = {
+    origin: function(origin, callback) {
+        if(allowedDomains.indexOf(origin) !== -1) {
+            callback(null, true)
+        } else {
+            callback(new Error('Request not allowed by CORS'))
+        }
+    }
+};
 
 app.use(cors(corsOptions));
 
